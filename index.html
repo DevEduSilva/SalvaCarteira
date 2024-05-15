@@ -30,7 +30,7 @@
                 </div>
                 <div class="step">
                     <label for="qtd">Qtd.:</label>
-                    <input class="linhaInput" type="text" id="qtd" onblur="validarQuantidade()">
+                    <input class="linhaInput" type="text" id="qtd" onblur="validarQuantidade()" oninput="permitirSomenteNumeros(this)">
                 </div>
                 <div class="step">
                     <label for="valor">Valor: </label>
@@ -77,7 +77,6 @@
     </div>
 
     <script src="_js/addProduto.js"></script>
-    <script src="_js/enviarWpp.js"></script>
     <script src="_js/telaLoading.js"></script>
 </body>
 
