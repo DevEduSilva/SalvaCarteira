@@ -1,0 +1,210 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Define a box model para incluir padding e borda no cálculo da largura */
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f0f0f0;
+    background-image: url('_imgs\backgound.jpg');
+    /* Adiciona uma cor de fundo de página */
+}
+
+.welcome {
+    background-color: #A0D995;
+    /* Altera a cor de fundo para vermelho coral */
+    width: 600px;
+    max-width: 90%;
+    /* Garante que o elemento não ultrapasse 90% da largura da tela */
+    height: auto;
+    /* Altura automática para se ajustar ao conteúdo */
+    border-radius: 30px;
+    /* Reduz o raio da borda */
+    padding: 20px;
+    /* Adiciona espaçamento interno */
+    margin: 50px auto;
+    /* Centraliza vertical e horizontalmente */
+    position: relative;
+    /* Define uma posição relativa para o posicionamento absoluto dos botões */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    /* Adiciona espaço entre o título e o conteúdo */
+}
+
+.containerPrincipal {
+    background-color: #DCD9F8;
+    /* Altera a cor de fundo para turquesa clara */
+    border-radius: 20px;
+    /* Reduz o raio da borda */
+    padding: 20px;
+    /* Adiciona espaçamento interno */
+}
+
+.containerPrincipal h2 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+    /* Adiciona espaço abaixo do subtítulo */
+}
+
+.etapas {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que os itens quebrem para a próxima linha se necessário */
+    gap: 20px;
+    /* Adiciona espaço entre os elementos */
+}
+
+.step {
+    flex: 1;
+    /* Faz com que os itens ocupem o mesmo espaço */
+}
+
+.linhaInput {
+    width: 100%;
+    /* Define a largura para ocupar todo o espaço disponível */
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background-color: transparent;
+    padding: 5px;
+    margin-bottom: 10px;
+    /* Adiciona espaço abaixo do input */
+    transition: border-bottom-color 0.3s;
+    /* Adiciona uma transição suave na cor da linha */
+}
+
+.linhaInput:focus {
+    border-bottom-color: #000;
+    /* Altera a cor da linha quando o input está em foco */
+    outline: none;
+}
+
+.botaoAdicionar {
+    width: 100%;
+    border: none;
+    border-radius: 25px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.botaoAdicionar:hover {
+    background-color: #2d6b30;
+}
+
+.botaoAdicionar:focus {
+    background-color: #5cb85c;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.containerSecundario {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.labelsItensSubtitulo {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr .5fr;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
+
+.labelsItensSubtitulo p {
+    text-align: center;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.item p {
+    text-align: center;
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+#total {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#total p {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#totalValor {
+    display: inline-block;
+    font-size: 20px;
+    color: #4CAF50;
+}
+
+/* Media Queries para dispositivos móveis e tablets */
+@media only screen and (max-width: 768px) {
+    .welcome {
+        width: 90%;
+        margin: 30px auto;
+    }
+
+    .containerPrincipal {
+        padding: 15px;
+    }
+
+    .botaoAdicionar {
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 508px) {
+    .etapas {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Estilo para o botão "Enviar via WhatsApp" */
+button.enviar-whatsapp {
+    margin-top: 10px;
+    display: inline-block;
+    background-color: #25D366;
+    /* Cor verde do WhatsApp */
+    color: #fff;
+    /* Cor do texto */
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Estilo de hover para o botão */
+button.enviar-whatsapp:hover {
+    background-color: #128C7E;
+    /* Cor de hover */
+}

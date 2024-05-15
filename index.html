@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="_css/index.css">
+    <link rel="stylesheet" href="_css/modal.css">
+    <link rel="stylesheet" href="_css/loading.css">
+
+</head>
+
+<body>
+
+    <div class="welcome">
+        <div class="loading-screen">
+            <h1>BEM VINDO À SALVA-CARTEIRAS</h1>
+            <div class="progress-bar"></div>
+        </div>
+    
+        <h1>CALCULADORA DE COMPRAS</h1>
+
+        <div class="containerPrincipal">
+            <h2>ADICIONAR PRODUTO</h2>
+            <div class="etapas">
+                <div class="step">
+                    <label for="produto"> Produto:</label>
+                    <input class="linhaInput" type="text" id="produto" onblur="validarProduto()">
+                </div>
+                <div class="step">
+                    <label for="qtd">Qtd.:</label>
+                    <input class="linhaInput" type="text" id="qtd" onblur="validarQuantidade()">
+                </div>
+                <div class="step">
+                    <label for="valor">Valor: </label>
+                    <div class="" style="display: flex;">
+                        <span>R$</span>
+                        <input class="linhaInput" type="text" id="valor" onblur="validarValor()">
+                    </div>
+                </div>
+            </div>
+
+            <input class="botaoAdicionar" type="button" value="ADICIONAR" onclick="validarEAdicionarItem()">
+        </div>
+
+
+        <!-- LISTA DE ITENS QUE ADICIONADOS -->
+        <div class="">
+            <div class="containerSecundario" id="listaItens">
+                <div class="labelsItensSubtitulo">
+                    <p>ID</p>
+                    <p>Produto:</p>
+                    <p>Qtd.:</p>
+                    <p>Valor:</p>
+                    <p></p> <!-- Adiciona um cabeçalho para a coluna de ações -->
+                </div>
+            </div>
+
+            <!-- Aqui vai ser o valor total da soma dos valores dos itens-->
+            <div id="total">
+                <p>TOTAL: R$ <span id="totalValor">0.00</span></p>
+            </div>
+            <!-- Adicione este botão ao seu HTML -->
+            <button class="enviar-whatsapp" onclick="enviarMensagemWhatsApp()">Enviar lista via WhatsApp</button>
+
+        </div>
+
+        <!-- Modal de confirmação de exclusão -->
+        <div id="modalExclusao" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Tem certeza que deseja excluir este item?</p>
+                <button id="confirmarExclusao">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="_js/addProduto.js"></script>
+    <script src="_js/enviarWpp.js"></script>
+    <script src="_js/telaLoading.js"></script>
+</body>
+
+</html>
