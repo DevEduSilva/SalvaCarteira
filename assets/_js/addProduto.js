@@ -17,6 +17,7 @@ function validarQuantidade() {
     }
 }
 
+// Permitir somente números no campo de quantidade
 function permitirSomenteNumeros(input) {
     input.value = input.value.replace(/[^0-9]/g, '');
 }
@@ -28,6 +29,8 @@ function validarValor() {
 
     if (isNaN(valor) || valor <= 0) {
         valorInput.value = '1,00';
+    } else {
+        valorInput.value = valor.toFixed(2).replace('.', ',');
     }
 }
 
@@ -84,7 +87,7 @@ function adicionarItem() {
         <p>${produto}</p>
         <p>${qtd}x</p>
         <p>${valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        <p style='display:none'>${valorTotalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+        <p>${valorTotalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p> <!-- Novo campo para valor total -->
         <button onclick="excluirItem(${id})">Excluir</button>
     `;
 
@@ -109,7 +112,6 @@ function atualizarValorTotal() {
     document.getElementById('totalValor').textContent = totalValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-
 // Função para limpar os campos de entrada
 function limparCampos() {
     document.getElementById('produto').value = '';
@@ -132,44 +134,28 @@ window.onbeforeunload = function () {
 
 // Função para enviar a lista de compras via WhatsApp
 function enviarMensagemWhatsApp() {
-    // Obtém os itens da lista
     var itens = document.querySelectorAll('.item');
 
-    // Verifica se há produtos na lista
     if (itens.length === 0) {
         alert("Não há produtos na lista para enviar via WhatsApp.");
         return;
     }
 
-    // Inicializa a mensagem com um texto introdutório
     var mensagem = "Lista de Compras:\n";
-
-    // Inicializa o valor total
     var total = 0;
 
-    // Percorre cada item e adiciona à mensagem
     itens.forEach(function (item) {
         var produto = item.querySelector('p:nth-child(2)').textContent;
         var qtd = item.querySelector('p:nth-child(3)').textContent;
         var valorUnitario = item.querySelector('p:nth-child(4)').textContent;
         var valorTotalItem = item.querySelector('p:nth-child(5)').textContent;
 
-        // Adiciona o produto, quantidade e valor total à mensagem
         mensagem += `${produto} (${qtd}), ${valorTotalItem}\n`;
-
-        // Atualiza o valor total
         total += parseFloat(valorTotalItem.replace(/[^\d,]/g, '').replace(',', '.'));
     });
 
-    // Formata o valor total no formato desejado
     var valorTotalFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    // Formata a mensagem para incluir o valor total
     mensagem += `\n*Total: ${valorTotalFormatado}*`;
-
-    // Formata a mensagem para que possa ser enviada via WhatsApp
     mensagem = encodeURIComponent(mensagem);
-
-    // Abre o WhatsApp com a mensagem pré-preenchida
     window.open(`https://api.whatsapp.com/send?text=${mensagem}`);
 }
