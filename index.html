@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="assets/_css/index.css">
     <link rel="stylesheet" href="assets/_css/modal.css">
     <link rel="stylesheet" href="assets/_css/loading.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <meta name="description"
         content="Bem-vindo à Salva-Carteiras! Use nossa Calculadora de Compras para adicionar produtos, calcular valores e enviar sua lista via WhatsApp. Facilite suas compras com praticidade e economia!">
 </head>
@@ -41,22 +44,24 @@
             </div>
             <input class="botaoAdicionar" type="button" value="ADICIONAR" onclick="validarEAdicionarItem()">
         </div>
-        <div class="">
-            <div class="containerSecundario" id="listaItens">
-                <div class="labelsItensSubtitulo">
-                    <p>ID</p>
-                    <p>Produto:</p>
-                    <p>Qtd.:</p>
-                    <p>Valor Unitário:</p>
-                    <p>Valor Total:</p> <!-- Novo campo para valor total -->
-                    <p></p> <!-- Coluna para ações -->
-                </div>
+
+        <div class="containerSecundario" id="listaItens">
+            <div class="labelsItensSubtitulo">
+                <p>ID</p>
+                <p>Produto:</p>
+                <p>Qtd.:</p>
+                <p>Valor Unitário:</p>
+                <p>Valor Total:</p>
+                <p></p>
             </div>
-            <div id="total">
-                <p>TOTAL: R$ <span id="totalValor">0.00</span></p>
-            </div>
-            <button class="enviar-whatsapp" onclick="enviarMensagemWhatsApp()">Enviar lista via WhatsApp</button>
         </div>
+        <div id="total">
+            <p>TOTAL: R$ <span id="totalValor">0.00</span></p>
+        </div>
+        <button id="enviar-wpp" class="enviar-whatsapp" onclick="enviarMensagemWhatsApp()">Enviar lista via
+            WhatsApp</button>
+
+        <!-- Modal -->
         <div id="modalExclusao" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -65,6 +70,8 @@
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/_js/addProduto.js"></script>
     <script src="assets/_js/telaLoading.js"></script>
 </body>

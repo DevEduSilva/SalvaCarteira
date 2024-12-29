@@ -1,3 +1,4 @@
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -7,9 +8,16 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
+    transition: opacity 0.3s ease-in-out; /* Transição suave */
+  }
+  
+  .modal.show {
+    display: block;
+    opacity: 1;
+  }
+  
+  /* Conteúdo do Modal */
+  .modal-content {
     background-color: #fefefe;
     margin: 20% auto;
     padding: 20px;
@@ -17,23 +25,32 @@
     width: 60%;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.close {
+    transition: transform 0.3s ease-in-out; /* Transição de transformação */
+  }
+  
+  .modal-content .close,
+  #confirmarExclusao {
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transições suaves para os botões */
+  }
+  
+  /* Botão de Fechar */
+  .close {
     color: #aaa;
-    float: right;
     font-size: 28px;
+    float: right;
+    top: 0;
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-}
-
-#confirmarExclusao {
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+  }
+  
+  /* Botão de Confirmar Exclusão */
+  #confirmarExclusao {
     background-color: #f44336;
     color: white;
     border: none;
@@ -42,8 +59,58 @@
     margin-top: 10px;
     cursor: pointer;
     font-size: 16px;
-}
-
-#confirmarExclusao:hover {
+  }
+  
+  #confirmarExclusao:hover {
     background-color: #d32f2f;
-}
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 80%; /* Modal ocupa mais espaço em telas pequenas */
+    }
+  
+    .close {
+      font-size: 24px;
+    }
+  
+    #confirmarExclusao {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .modal-content {
+      width: 90%; /* Modal ocupa quase toda a tela em dispositivos móveis */
+    }
+  
+    .close {
+      font-size: 20px;
+    }
+  
+    #confirmarExclusao {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+  }
+  
+  .excluirBtn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.2s;
+    padding: 5px;
+    line-height: 1;
+  }
+  
+  .material-icons {
+    font-size: 24px;
+  }
+  
+  
+  
+  

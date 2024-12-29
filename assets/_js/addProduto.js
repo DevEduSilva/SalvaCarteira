@@ -3,17 +3,17 @@ var idCount = 1;
 
 // Função para validar o produto (converte para maiúsculas)
 function validarProduto() {
-    var produtoInput = document.getElementById('produto');
-    produtoInput.value = produtoInput.value.toUpperCase().trim();
+    var produtoInput = $('#produto');
+    produtoInput.val(produtoInput.val().toUpperCase().trim());
 }
 
 // Função para validar a quantidade (ajusta para 1 se for <= 0)
 function validarQuantidade() {
-    var qtdInput = document.getElementById('qtd');
-    var qtdValue = parseInt(qtdInput.value);
+    var qtdInput = $('#qtd');
+    var qtdValue = parseInt(qtdInput.val());
 
     if (isNaN(qtdValue) || qtdValue <= 0) {
-        qtdInput.value = '1';
+        qtdInput.val('1');
     }
 }
 
@@ -24,13 +24,13 @@ function permitirSomenteNumeros(input) {
 
 // Função para validar o valor (ajusta para 1 se for <= 0)
 function validarValor() {
-    var valorInput = document.getElementById('valor');
-    var valor = parseFloat(valorInput.value.replace(',', '.'));
+    var valorInput = $('#valor');
+    var valor = parseFloat(valorInput.val().replace(',', '.'));
 
     if (isNaN(valor) || valor <= 0) {
-        valorInput.value = '1,00';
+        valorInput.val('1,00');
     } else {
-        valorInput.value = valor.toFixed(2).replace('.', ',');
+        valorInput.val(valor.toFixed(2).replace('.', ','));
     }
 }
 
@@ -40,9 +40,9 @@ function validarEAdicionarItem() {
     validarQuantidade();
     validarValor();
 
-    var produto = document.getElementById('produto').value;
-    var qtd = document.getElementById('qtd').value;
-    var valor = document.getElementById('valor').value;
+    var produto = $('#produto').val();
+    var qtd = $('#qtd').val();
+    var valor = $('#valor').val();
 
     if (!produto || !qtd || !valor) {
         alert('Por favor, preencha todos os campos antes de adicionar o produto.');
@@ -54,48 +54,56 @@ function validarEAdicionarItem() {
 
 // Função para excluir um item
 function excluirItem(id) {
-    var item = document.getElementById('item-' + id);
-    var modal = document.getElementById('modalExclusao');
-    modal.style.display = 'block';
+    var item = $('#item-' + id);
+    var modal = $('#modalExclusao');
+    modal.show();
 
-    document.getElementById('confirmarExclusao').onclick = function () {
-        item.parentNode.removeChild(item);
+    $('#confirmarExclusao').click(function () {
+        item.remove();
         atualizarValorTotal();
-        modal.style.display = 'none';
-    };
 
-    var closeBtn = document.getElementsByClassName('close')[0];
-    closeBtn.onclick = function () {
-        modal.style.display = 'none';
-    };
+        // Verificar se ainda existem itens na lista
+        if ($('.item').length === 0) {
+            $('#listaItens').hide();
+            $('#total').hide();
+            $('.enviar-whatsapp').hide();
+        }
+
+        modal.hide();
+    });
+
+    $('.close').click(function () {
+        modal.hide();
+    });
 }
 
 // Função para adicionar um novo item
 function adicionarItem() {
-    var produto = document.getElementById('produto').value.trim();
-    var qtd = parseInt(document.getElementById('qtd').value);
-    var valor = parseFloat(document.getElementById('valor').value.replace(',', '.'));
-    var valorTotalItem = valor * qtd; // Multiplica o valor pela quantidade
+    var produto = $('#produto').val().trim();
+    var qtd = parseInt($('#qtd').val());
+    var valor = parseFloat($('#valor').val().replace(',', '.'));
+    var valorTotalItem = valor * qtd;
 
-    var newItem = document.createElement('div');
-    newItem.classList.add('item');
-    newItem.id = 'item-' + idCount;
-
+    var newItem = $('<div>').addClass('item').attr('id', 'item-' + idCount);
     var id = idCount++;
-    newItem.innerHTML = `
+
+    newItem.html(`
         <p>${id}</p>
         <p>${produto}</p>
         <p>${qtd}x</p>
         <p>${valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        <p>${valorTotalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p> <!-- Novo campo para valor total -->
+        <p>${valorTotalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
         <button onclick="excluirItem(${id})">Excluir</button>
-    `;
+    `);
 
-    document.getElementById('listaItens').appendChild(newItem);
+    $('#listaItens').append(newItem);
     atualizarValorTotal();
 
-    if (document.querySelectorAll('.item').length === 1) {
-        document.getElementById('listaItens').parentNode.style.display = 'block';
+    // Mostrar a lista de itens, total e botão de WhatsApp após o primeiro item ser adicionado
+    if ($('.item').length === 1) {
+        $('#listaItens').show();
+        $('#total').show();
+        $('.enviar-whatsapp').show();
     }
 
     limparCampos();
@@ -104,24 +112,23 @@ function adicionarItem() {
 // Função para atualizar o valor total
 function atualizarValorTotal() {
     var totalValor = 0;
-    var items = document.querySelectorAll('.item');
-    items.forEach(function (item) {
-        var valorTotalItem = parseFloat(item.querySelector('p:nth-child(5)').textContent.replace(/[^\d,]/g, '').replace(',', '.'));
+    $('.item').each(function () {
+        var valorTotalItem = parseFloat($(this).find('p:nth-child(5)').text().replace(/[^\d,]/g, '').replace(',', '.'));
         totalValor += valorTotalItem;
     });
-    document.getElementById('totalValor').textContent = totalValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    $('#totalValor').text(totalValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
 }
 
 // Função para limpar os campos de entrada
 function limparCampos() {
-    document.getElementById('produto').value = '';
-    document.getElementById('qtd').value = '';
-    document.getElementById('valor').value = '';
-    document.getElementById('produto').focus();
+    $('#produto').val('');
+    $('#qtd').val('');
+    $('#valor').val('');
+    $('#produto').focus();
 }
 
 // Evento de tecla ao campo de valor para permitir adicionar item pressionando "Enter"
-document.getElementById('valor').addEventListener('keypress', function (event) {
+$('#valor').keypress(function (event) {
     if (event.key === 'Enter') {
         validarEAdicionarItem();
     }
@@ -134,7 +141,7 @@ window.onbeforeunload = function () {
 
 // Função para enviar a lista de compras via WhatsApp
 function enviarMensagemWhatsApp() {
-    var itens = document.querySelectorAll('.item');
+    var itens = $('.item');
 
     if (itens.length === 0) {
         alert("Não há produtos na lista para enviar via WhatsApp.");
@@ -144,13 +151,13 @@ function enviarMensagemWhatsApp() {
     var mensagem = "Lista de Compras:\n";
     var total = 0;
 
-    itens.forEach(function (item) {
-        var produto = item.querySelector('p:nth-child(2)').textContent;
-        var qtd = item.querySelector('p:nth-child(3)').textContent;
-        var valorUnitario = item.querySelector('p:nth-child(4)').textContent;
-        var valorTotalItem = item.querySelector('p:nth-child(5)').textContent;
+    itens.each(function () {
+        var produto = $(this).find('p:nth-child(2)').text();
+        var qtd = $(this).find('p:nth-child(3)').text();
+        var valorUnitario = $(this).find('p:nth-child(4)').text();
+        var valorTotalItem = $(this).find('p:nth-child(5)').text();
 
-        mensagem += `${produto} (${qtd}), ${valorTotalItem}\n`;
+        mensagem += `${produto}(${qtd} x ${valorUnitario}) - ${valorTotalItem}\n`;
         total += parseFloat(valorTotalItem.replace(/[^\d,]/g, '').replace(',', '.'));
     });
 
