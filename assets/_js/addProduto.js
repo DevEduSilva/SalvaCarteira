@@ -93,7 +93,9 @@ function adicionarItem() {
         <p>${qtd}x</p>
         <p>${valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
         <p>${valorTotalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        <button onclick="excluirItem(${id})">Excluir</button>
+        <button class="excluirBtn" onclick="excluirItem(${id})">
+            <span class="material-icons">delete</span>
+        </button>
     `);
 
     $('#listaItens').append(newItem);
