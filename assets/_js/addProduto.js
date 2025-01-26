@@ -168,3 +168,20 @@ function enviarMensagemWhatsApp() {
     mensagem = encodeURIComponent(mensagem);
     window.open(`https://api.whatsapp.com/send?text=${mensagem}`);
 }
+
+// Função para alterar a quantidade usando os botões "+" e "-"
+function alterarQuantidade(incremento) {
+    const qtdInput = document.getElementById('qtd');
+    let qtdAtual = parseInt(qtdInput.value) || 1;
+
+    // Incrementa ou decrementa a quantidade
+    qtdAtual += incremento;
+
+    // Garante que a quantidade mínima seja 1
+    if (qtdAtual < 1) {
+        qtdAtual = 1;
+    }
+
+    // Atualiza o valor do input
+    qtdInput.value = qtdAtual;
+}
