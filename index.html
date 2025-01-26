@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="assets/_css/loading.css">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
 
     <meta name="description"
         content="Bem-vindo à Salva-Carteiras! Use nossa Calculadora de Compras para adicionar produtos, calcular valores e enviar sua lista via WhatsApp. Facilite suas compras com praticidade e economia!">
@@ -49,6 +54,7 @@
                 </div>
             </div>
             <input class="botaoAdicionar" type="button" value="ADICIONAR" onclick="validarEAdicionarItem()">
+            
         </div>
 
         <div class="containerSecundario" id="listaItens">
@@ -65,6 +71,12 @@
             <p>TOTAL: R$ <span id="totalValor">0.00</span></p>
         </div>
         <button id="enviar-wpp" class="enviar-whatsapp" onclick="gerarPDF()">GERAR LISTA EM PDF</button>
+        <button id="importar-lista" onclick="abrirArquivo()"
+            style="padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; color: white; background-color: #007bff;">
+            IMPORTAR LISTA (somente JSON)
+        </button>
+        <input type="file" id="inputArquivo" style="display: none;" accept=".json">
+
 
         <!-- Modal -->
         <div id="modalExclusao" class="modal">
@@ -77,7 +89,11 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+
     <script src="assets/_js/telaLoading.js"></script>
     <script src="assets/_js/validar.js"></script>
     <script src="assets/_js/addProduto.js"></script>

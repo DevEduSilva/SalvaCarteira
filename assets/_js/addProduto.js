@@ -1,5 +1,89 @@
-// Variável para contar o ID incremental
+// Variável para contar os IDs existentes
 var idCount = 1;
+
+// Função para contar os IDs existentes
+function contarIdsExistentes() {
+    var idsExistentes = $('.item').map(function () {
+        return parseInt($(this).find('p:first').text(), 10); // Pega o primeiro <p> que é o ID
+    }).get();
+
+    if (idsExistentes.length > 0) {
+        idCount = Math.max(...idsExistentes) + 1; // Define o próximo ID como o maior + 1
+    }
+}
+
+// Função para abrir o seletor de arquivos
+function abrirArquivo() {
+    document.getElementById('inputArquivo').click();
+}
+
+// Event Listener para importar o arquivo JSON
+document.getElementById('inputArquivo').addEventListener('change', function (event) {
+    const arquivo = event.target.files[0];
+
+    // Verifica se o arquivo é JSON
+    if (arquivo && arquivo.type === "application/json") {
+        const leitor = new FileReader();
+
+        leitor.onload = function (e) {
+            try {
+                // Tenta parsear o conteúdo do arquivo como JSON
+                const dados = JSON.parse(e.target.result);
+                // Se o parse for bem-sucedido, chama a função para processar os dados
+                importarLista(dados);
+            } catch (erro) {
+                alert("Erro ao processar o arquivo. O arquivo não é um JSON válido.");
+            }
+        };
+
+        leitor.readAsText(arquivo); // Lê o arquivo como texto
+    } else {
+        alert("O arquivo selecionado não é um arquivo JSON válido.");
+    }
+});
+
+// Função para processar e adicionar os dados da lista
+function importarLista(dados) {
+    contarIdsExistentes(); // Atualiza o idCount com o maior ID existente
+
+    dados.produtos.forEach(item => {
+        const produto = item["nome"];
+        const qtd = item["quantidade"];
+        const valorUnitario = item["valor_unitario"];
+        const valorTotal = qtd * valorUnitario;
+
+        // Verificando se todos os campos estão presentes
+        if (produto && !isNaN(qtd) && !isNaN(valorUnitario) && !isNaN(valorTotal)) {
+            var newItem = $('<div>').addClass('item').attr('id', 'item-' + idCount);
+            var id = idCount++;
+
+            newItem.html(`
+                <p>${id}</p>
+                <p>${produto}</p>
+                <p>${qtd}x</p>
+                <p>${valorUnitario.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                <p>${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                <button class="excluirBtn" onclick="excluirItem(${id})">
+                    <span class="material-icons">delete</span>
+                </button>
+            `);
+
+            $('#listaItens').append(newItem);
+            atualizarValorTotal();
+
+            // Mostrar a lista de itens, total após o primeiro item ser adicionado
+            if ($('.item').length === 1) {
+                $('#listaItens').show();
+                $('#total').show();
+            }
+        }
+    });
+
+    // Atualiza visibilidade do botão importar-lista
+    atualizarBotaoImportarLista();
+
+    alert("Lista importada com sucesso!");
+}
 
 // Função para validar o produto (converte para maiúsculas)
 function validarProduto() {
@@ -56,6 +140,7 @@ function validarEAdicionarItem() {
 function excluirItem(id) {
     var item = $('#item-' + id);
     var modal = $('#modalExclusao');
+
     modal.show();
 
     $('#confirmarExclusao').click(function () {
@@ -66,8 +151,10 @@ function excluirItem(id) {
         if ($('.item').length === 0) {
             $('#listaItens').hide();
             $('#total').hide();
-            $('.enviar-whatsapp').hide();
         }
+
+        // Atualiza visibilidade do botão importar-lista após exclusão
+        atualizarBotaoImportarLista();
 
         modal.hide();
     });
@@ -101,12 +188,14 @@ function adicionarItem() {
     $('#listaItens').append(newItem);
     atualizarValorTotal();
 
-    // Mostrar a lista de itens, total e botão de WhatsApp após o primeiro item ser adicionado
+    // Mostrar a lista de itens e total após o primeiro item ser adicionado
     if ($('.item').length === 1) {
         $('#listaItens').show();
         $('#total').show();
-        $('.enviar-whatsapp').show();
     }
+
+    // Atualiza visibilidade do botão importar-lista após adicionar item
+    atualizarBotaoImportarLista();
 
     limparCampos();
 }
@@ -127,6 +216,22 @@ function limparCampos() {
     $('#qtd').val('');
     $('#valor').val('');
     $('#produto').focus();
+}
+
+// Função para atualizar a visibilidade do botão importar-lista
+function atualizarBotaoImportarLista() {
+    var btnList = $('#importar-lista');
+    var btnWpp = $('#enviar-wpp'); // Selecionando o botão de enviar WhatsApp
+
+    // Mostrar o botão de importar lista se não houver itens, senão esconder
+    if ($('.item').length === 0) {
+        btnList.show();
+    } else {
+        btnList.hide();
+    }
+
+    // Garantir que o botão de enviar WhatsApp sempre fique visível
+    btnWpp.show();
 }
 
 // Evento de tecla ao campo de valor para permitir adicionar item pressionando "Enter"
@@ -164,97 +269,87 @@ function gerarPDF() {
     const doc = new jsPDF();
     let y = 20; // Posição inicial para o texto
 
-    // Obter a data atual no formato dd/mm/yyyy
-    const dataHoje = new Date();
-    const dia = String(dataHoje.getDate()).padStart(2, '0');
-    const mes = String(dataHoje.getMonth() + 1).padStart(2, '0'); // Mes começa de 0
-    const ano = dataHoje.getFullYear();
-    const dataFormatada = `${dia}/${mes}/${ano}`;
+    // Função para formatar a data
+    const formatarData = (data) => {
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0'); // Mês começa de 0
+        const ano = data.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+    };
 
-    // Cabeçalho com fundo pastel suave e texto preto
+    // Definindo os dados da data e título
+    const dataHoje = new Date();
+    const dataFormatada = formatarData(dataHoje);
+
+    // Cabeçalho com fundo suave e texto preto
     doc.setFillColor(234, 240, 249); // Fundo azul suave pastel
     doc.rect(0, 0, 210, 40, 'F'); // Fundo do cabeçalho
-    doc.setTextColor(0, 0, 0); // Texto preto
+    doc.setTextColor(0, 51, 102); // Texto azul suave
     doc.setFontSize(28);
     doc.text('LISTA DE COMPRAS', 105, 25, { align: 'center' }); // Título
     y += 32;
 
-    // Subtítulo com fonte maior e foco no design, agora incluindo a data de hoje
+    // Subtítulo com a data formatada
     doc.setFontSize(18);
-    doc.setTextColor(0, 51, 102); // Azul suave
-    doc.text(`Produtos da Lista - ${dataFormatada}`, 105, y, { align: 'center' });
-    y += 10;
+    doc.setTextColor(50, 50, 50); // Cinza suave
+    doc.text(`${dataFormatada}`, 105, y, { align: 'center' });
+    y += 12;
 
-    // Linha de separação sutil (sem bordas muito grossas)
-    doc.setDrawColor(0, 51, 102); // Azul suave
-    doc.setLineWidth(0.5);
-    doc.line(10, y, 200, y);
+    // Linha de separação suave
+    doc.setDrawColor(0, 51, 102); // Cor da linha
+    doc.line(10, y, 200, y); // Linha de separação
     y += 8;
 
-    // Definição das colunas com fonte preta e padding pequeno
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0); // Texto preto
-    doc.text('Produto', 10, y);
-    doc.text('Quantidade', 70, y);
-    doc.text('Valor Unitário', 130, y);
-    doc.text('Total', 170, y);
-    y += 5;
+    // Cabeçalho da tabela (sem o ID) com um fundo suave
+    const colunas = ["Produto", "Quantidade", "Preço Unitário", "Total"];
+    const colX = [10, 60, 120, 160];
 
-    // Linha de separação entre categorias e dados
-    doc.setDrawColor(0, 51, 102); // Azul suave
-    doc.line(10, y, 200, y);
-    y += 15;
+    doc.setFillColor(220, 220, 220); // Fundo do cabeçalho
+    doc.rect(10, y - 4, 190, 8, 'F'); // Fundo das células do cabeçalho
+    doc.setTextColor(0, 51, 102); // Texto azul suave
+    doc.setFontSize(14);
+    colunas.forEach((coluna, i) => {
+        doc.text(coluna, colX[i], y);
+    });
+    y += 12;
 
-    // Adiciona os itens com padding pequeno e fonte preta
+    // Preenchendo os dados dos produtos na tabela
     $('.item').each(function () {
-        let produto = $(this).find('p:nth-child(2)').text();
-        let qtd = $(this).find('p:nth-child(3)').text();
-        let valorUnitario = $(this).find('p:nth-child(4)').text();
-        let valorTotalItem = $(this).find('p:nth-child(5)').text();
+        const dados = [
+            $(this).find('p:nth-child(2)').text(), // Produto
+            $(this).find('p:nth-child(3)').text(), // Quantidade
+            $(this).find('p:nth-child(4)').text(), // Preço Unitário
+            $(this).find('p:nth-child(5)').text()  // Total
+        ];
 
-        doc.setFontSize(12);
-        doc.setTextColor(0, 0, 0); // Texto preto
-
-        // Adicionando o texto de cada item com padding pequeno
-        doc.text(produto, 10, y);
-        doc.text(qtd, 70, y);
-        doc.text(valorUnitario, 130, y);
-        doc.text(valorTotalItem, 170, y);
+        dados.forEach((dado, i) => {
+            doc.text(dado, colX[i], y);
+        });
 
         y += 10;
-
-        // Verifica se ultrapassou o limite da página, se sim, cria uma nova página
-        if (y > 275) {
-            doc.addPage(); // Adiciona uma nova página
-            y = 10; // Reseta a posição
-        }
     });
 
-    // Cálculo do total geral com fonte preta
-    let total = 0;
+    // Calculando o valor total
+    let totalValor = 0;
     $('.item').each(function () {
-        let valorTotalItem = $(this).find('p:nth-child(5)').text();
-        total += parseFloat(valorTotalItem.replace(/[^\d,]/g, '').replace(',', '.'));
+        const valorTotalItem = parseFloat($(this).find('p:nth-child(5)').text().replace(/[^\d,]/g, '').replace(',', '.'));
+        totalValor += valorTotalItem;
     });
 
-    // Total Geral com fonte em azul suave
+    // Adicionando o total ao PDF com estilo suave
     y += 15;
-    doc.setFontSize(18);
+    doc.setFontSize(16);
     doc.setTextColor(0, 51, 102); // Azul suave
-    doc.text(`Total Geral: ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`, 10, y);
+    doc.text(`Valor Total: ${totalValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`, 10, y);
 
-    // Linha de finalização em azul suave
-    y += 10;
-    doc.setDrawColor(0, 51, 102); // Azul suave
-    doc.line(10, y, 200, y);
-
-    // Rodapé simples e delicado
+    // Rodapé com texto suave
     y += 15;
     doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100); // Cinza suave
-    doc.text('Feito por WebDevSilva', 105, y, { align: 'center' });
+    doc.setTextColor(150, 150, 150); // Cinza suave
+    doc.text('Gerado por Lista de Compras', 105, y, { align: 'center' });
 
-    // Salva o PDF com um nome simples e suave
-    doc.save('lista_de_compras_atrativa.pdf');
+    // Gerar o arquivo PDF
+    doc.save(`Lista_de_Compras_${dataFormatada}.pdf`);
 }
+
 
