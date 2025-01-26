@@ -17,10 +17,10 @@
 
 <body>
     <div class="welcome">
-        <div class="loading-screen">
+        <!-- <div class="loading-screen">
             <h1>BEM VINDO À SALVA-CARTEIRAS</h1>
             <div class="progress-bar"></div>
-        </div>
+        </div> -->
         <h1>CALCULADORA DE COMPRAS</h1>
         <div class="containerPrincipal">
             <h2>ADICIONAR PRODUTO</h2>
@@ -32,17 +32,18 @@
                 <div class="step">
                     <label for="qtd">Qtd.:</label>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <input class="linhaInput" type="text" id="qtd" value="1" inputmode="numeric" onblur="validarQuantidade()"
-                        oninput="permitirSomenteNumeros(this)">
+                        <input class="linhaInput" type="text" id="qtd" value="1" inputmode="numeric"
+                            onblur="validarQuantidade()" oninput="permitirSomenteNumeros(this)">
                         <button type="button" class="qtd-btn red" onclick="alterarQuantidade(-1)">-</button>
                         <button type="button" class="qtd-btn green" onclick="alterarQuantidade(1)">+</button>
                     </div>
-                </div>                
+                </div>
                 <div class="step">
                     <label for="valor">Valor: </label>
                     <div class="" style="display: flex; align-self: center; align-items: center; gap: 5px;">
                         <span>R$</span>
-                        <input class="linhaInput" type="text" id="valor" inputmode="numeric" onkeydown="permitirApenasNumeros(event)">
+                        <input class="linhaInput" type="text" id="valor" inputmode="numeric"
+                            onkeydown="permitirApenasNumeros(event)">
                     </div>
 
                 </div>
@@ -63,8 +64,7 @@
         <div id="total">
             <p>TOTAL: R$ <span id="totalValor">0.00</span></p>
         </div>
-        <button id="enviar-wpp" class="enviar-whatsapp" onclick="enviarMensagemWhatsApp()">Enviar lista via
-            WhatsApp</button>
+        <button id="enviar-wpp" class="enviar-whatsapp" onclick="gerarPDF()">GERAR LISTA EM PDF</button>
 
         <!-- Modal -->
         <div id="modalExclusao" class="modal">
@@ -76,10 +76,13 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/_js/telaLoading.js"></script>
     <script src="assets/_js/validar.js"></script>
     <script src="assets/_js/addProduto.js"></script>
+
+
 </body>
 
 </html>
