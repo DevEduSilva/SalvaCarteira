@@ -38,8 +38,9 @@
                     <label for="valor">Valor: </label>
                     <div class="" style="display: flex;">
                         <span>R$</span>
-                        <input class="linhaInput" type="text" id="valor" onblur="validarValor()">
+                        <input class="linhaInput" type="text" id="valor" onkeydown="permitirApenasNumeros(event)">
                     </div>
+
                 </div>
             </div>
             <input class="botaoAdicionar" type="button" value="ADICIONAR" onclick="validarEAdicionarItem()">
