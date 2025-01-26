@@ -32,7 +32,7 @@
                 <div class="step">
                     <label for="qtd">Qtd.:</label>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <input class="linhaInput" type="text" id="qtd" value="1" onblur="validarQuantidade()"
+                        <input class="linhaInput" type="text" id="qtd" value="1" inputmode="numeric" onblur="validarQuantidade()"
                         oninput="permitirSomenteNumeros(this)">
                         <button type="button" class="qtd-btn red" onclick="alterarQuantidade(-1)">-</button>
                         <button type="button" class="qtd-btn green" onclick="alterarQuantidade(1)">+</button>
@@ -40,9 +40,9 @@
                 </div>                
                 <div class="step">
                     <label for="valor">Valor: </label>
-                    <div class="" style="display: flex;">
+                    <div class="" style="display: flex; align-self: center; align-items: center; gap: 5px;">
                         <span>R$</span>
-                        <input class="linhaInput" type="text" id="valor" onkeydown="permitirApenasNumeros(event)">
+                        <input class="linhaInput" type="text" id="valor" inputmode="numeric" onkeydown="permitirApenasNumeros(event)">
                     </div>
 
                 </div>
