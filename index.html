@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="assets/_css/index.css">
     <link rel="stylesheet" href="assets/_css/modal.css">
     <link rel="stylesheet" href="assets/_css/loading.css">
+    <link rel="stylesheet" href="assets/_css/fixedInfo.css">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        .hide{
+        .hide {
             display: none;
         }
     </style>
@@ -21,11 +22,31 @@
 </head>
 
 <body>
+    <div class="div-flutuante">
+        <button id="toggleBtn">+</button>
+
+        <!-- Conteúdo oculto inicialmente -->
+        <div id="conteudoFlutuante" style="display:none;">
+            <div id="valorMaxContainer">
+                <label for="valorMax">Valor máximo a gastar:</label>
+                <input type="text" id="valorMax" placeholder="R$ 0,00" oninput="atualizarValorRestante()"
+                    onkeydown="if(event.key === 'Enter'){confirmarValorMax();}">
+            </div>
+
+            <button id="editarValorBtn" style="display:none;" onclick="editarValorMax()">Editar valor máximo</button>
+
+            <p>VALOR TOTAL DA COMPRA ATÉ AGORA</p>
+            <span id="valorTotalFlutuante">R$ 0,00</span>
+            <p>Valor que ainda pode gastar:</p>
+            <span id="valorRestante">R$ 0,00</span>
+        </div>
+    </div>
+
     <div class="welcome">
-        <!-- <div class="loading-screen">
+        <div class="loading-screen">
             <h1>BEM VINDO À SALVA-CARTEIRAS</h1>
             <div class="progress-bar"></div>
-        </div> -->
+        </div>
         <h1>CALCULADORA DE COMPRAS</h1>
         <div class="containerPrincipal">
             <h2>ADICIONAR PRODUTO</h2>
@@ -54,7 +75,7 @@
                 </div>
             </div>
             <input class="botaoAdicionar" type="button" value="ADICIONAR" onclick="validarEAdicionarItem()">
-            
+
         </div>
 
         <div class="containerSecundario" id="listaItens">
@@ -71,10 +92,13 @@
             <p>TOTAL: R$ <span id="totalValor">0.00</span></p>
         </div>
         <button id="enviar-wpp" class="enviar-whatsapp" onclick="gerarPDF()">GERAR LISTA EM PDF</button>
-        <button id="importar-lista" onclick="abrirArquivo()"
+
+        <!-- OCULTO POR ENQUANTO QUE NÃO FUNCIONAMENTO ATIVO -->
+        <!-- <button id="importar-lista" onclick="abrirArquivo()"
             style="padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; color: white; background-color: #007bff;">
             IMPORTAR LISTA (somente JSON)
-        </button>
+        </button> -->
+
         <input type="file" id="inputArquivo" style="display: none;" accept=".json">
 
 
@@ -97,6 +121,20 @@
     <script src="assets/_js/telaLoading.js"></script>
     <script src="assets/_js/validar.js"></script>
     <script src="assets/_js/addProduto.js"></script>
+
+    <script>
+        // Toggle expansão
+        document.getElementById('toggleBtn').addEventListener('click', function () {
+            const conteudo = document.getElementById('conteudoFlutuante');
+            if (conteudo.style.display === 'none') {
+                conteudo.style.display = 'block';
+                this.textContent = '−'; // muda para ícone de fechar
+            } else {
+                conteudo.style.display = 'none';
+                this.textContent = '+'; // volta para ícone de expandir
+            }
+        });
+    </script>
 
 
 </body>
