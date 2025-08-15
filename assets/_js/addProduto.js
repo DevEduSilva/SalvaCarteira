@@ -1,6 +1,7 @@
 // Variável para contar os IDs existentes
 var idCount = 1;
 var valorMaximo = 0;
+var valorTotalCompra = 0; // Variável global para controlar o total
 
 // Função para contar os IDs existentes
 function contarIdsExistentes() {
@@ -202,10 +203,10 @@ function atualizarValorRestante() {
 
     if (restante >= 0) {
         elemento.text(restante.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
-        elemento.css('color', '#333'); // cor padrão (preto/escuro)
+        elemento.css('color', '#333'); // cor padrão
     } else {
         elemento.text(restante.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
-        elemento.css('color', 'red'); // saldo negativo em vermelho
+        elemento.css('color', 'red'); // saldo negativo
     }
 }
 
@@ -224,6 +225,13 @@ function editarValorMax() {
     $('#editarValorBtn').hide();
     $('#valorMax').focus();
 }
+
+// Confirma valor máximo ao clicar fora do input (funciona no mobile)
+$('#valorMax').on('blur', function () {
+    if ($(this).val().trim() !== '') {
+        confirmarValorMax();
+    }
+});
 
 // Função para limpar os campos de entrada
 function limparCampos() {
