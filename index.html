@@ -9,13 +9,9 @@
     <link rel="stylesheet" href="assets/_css/modal.css">
     <link rel="stylesheet" href="assets/_css/loading.css">
     <link rel="stylesheet" href="assets/_css/fixedInfo.css">
+    <link rel="stylesheet" href="assets/_css/hideClass.css">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-        .hide {
-            display: none;
-        }
-    </style>
 
     <meta name="description"
         content="Bem-vindo à Salva-Carteiras! Use nossa Calculadora de Compras para adicionar produtos, calcular valores e enviar sua lista via WhatsApp. Facilite suas compras com praticidade e economia!">
@@ -35,9 +31,9 @@
 
             <button id="editarValorBtn" style="display:none;" onclick="editarValorMax()">Editar valor máximo</button>
 
-            <p>VALOR TOTAL DA COMPRA ATÉ AGORA</p>
+            <p>VALOR DA COMPRA</p>
             <span id="valorTotalFlutuante">R$ 0,00</span>
-            <p>Valor que ainda pode gastar:</p>
+            <p>VALOR RESTANTE:</p>
             <span id="valorRestante">R$ 0,00</span>
         </div>
     </div>
@@ -121,20 +117,7 @@
     <script src="assets/_js/telaLoading.js"></script>
     <script src="assets/_js/validar.js"></script>
     <script src="assets/_js/addProduto.js"></script>
-
-    <script>
-        // Toggle expansão
-        document.getElementById('toggleBtn').addEventListener('click', function () {
-            const conteudo = document.getElementById('conteudoFlutuante');
-            if (conteudo.style.display === 'none') {
-                conteudo.style.display = 'block';
-                this.textContent = '−'; // muda para ícone de fechar
-            } else {
-                conteudo.style.display = 'none';
-                this.textContent = '+'; // volta para ícone de expandir
-            }
-        });
-    </script>
+    <script src="assets/_js/toggleExpansivel.js"></script>
 
 
 </body>
