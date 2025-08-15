@@ -338,3 +338,12 @@ function gerarPDF() {
 
     doc.save(`Lista_de_Compras_${dataFormatada}.pdf`);
 }
+
+window.addEventListener('beforeunload', function (e) {
+    // Você pode colocar aqui uma condição, por exemplo, só avisar se houver itens
+    if ($('.item').length > 0 || valorMaximo > 0) {
+        // Alguns navegadores exigem returnValue para exibir o aviso
+        e.preventDefault();
+        e.returnValue = ''; // Isso dispara o alerta padrão do navegador
+    }
+});
