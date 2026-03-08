@@ -51,7 +51,4 @@ Os nomes dos commits são compostos de 2 partes:
 - `feat: adicionar sistema de calculo`: Implementa a lógia de calculo.
 - `fix: corrigir bug de calculo`: Resolve um problema ao calcular itens.
 
-   
-## Contato
-Para mais informações ou dúvidas sobre o projeto, entre em contato através do [WhatsApp](https://api.whatsapp.com/send?phone=5561998019018).
 
